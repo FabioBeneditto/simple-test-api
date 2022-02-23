@@ -1,0 +1,14 @@
+{
+  "name": "labs-test-api",
+  "version": "0.0.1",
+  "description": "API for Code Tests - Solutions Lab at Azion Tech",
+  "main": "index.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "author": "Fabio Beneditto",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
