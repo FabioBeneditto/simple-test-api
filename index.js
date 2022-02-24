@@ -3,8 +3,13 @@ const app = express()
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
-  // res.json(req)
+  var hostName = req.hostname
+  
+  if(!process.env.PORT) {
+    hostName += ':' + port 
+  }
+
+  res.json([{'newUrl': hostName + '/api'}])
 })
 
 app.post('/', (req, res) => {
