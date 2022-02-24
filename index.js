@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
     hostName += ':' + port 
   }
 
-  res.json([{'newUrl': hostName + '/api'}])
+  res.json({'newUrl': hostName + '/api'})
 })
 
 app.post('/', (req, res) => {
@@ -31,7 +31,7 @@ app.get('/api', (req, res) => {
   res.json(
       {
         'code': statusId, 
-        
+
       }
     )
 })
