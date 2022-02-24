@@ -17,13 +17,7 @@ app.use('/favicon.ico', express.static('favicon.ico'));
 
 // Points to API URL, based on platform (local or Heroku)
 app.get('/', (req, res) => {
-  var hostName = req.hostname
-
-  if(!process.env.PORT) {
-    hostName += ':' + port 
-  }
-
-  res.json({'newUrl': hostName + '/api'})
+  res.json({'newUrl': req.get('host') + '/api'})
 })
 
 app.post('/', (req, res) => {
