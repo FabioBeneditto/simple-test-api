@@ -1,5 +1,5 @@
 // Locally reguired 
-const dotenv = require('dotenv').config({ path: './.env' })
+// const dotenv = require('dotenv').config({ path: './.env' })
 // end of Locally required
 const express = require('express')
 const app = express()
