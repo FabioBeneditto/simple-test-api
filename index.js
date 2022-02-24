@@ -45,13 +45,13 @@ app.get('/api', (req, res) => {
 })
 
 app.param('id', function (req, res, next, id) {
-  statusId = id
+  statusId = parseInt(id)
   next()
 })
 
 app.get('/api/:id', function (req, res) {
   phrase = fortune.fortune()
-  
+
   res.json(
       {
         'code': statusId,
