@@ -9,6 +9,7 @@
   "author": "Fabio Beneditto",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "http-status-code": "^2.1.0",
     "random-fortune": "^0.2.0"
