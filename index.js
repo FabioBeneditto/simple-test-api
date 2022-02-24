@@ -10,14 +10,14 @@ const HTTPStatusCode = require('http-status-code')
 const fortune = require('random-fortune')
 var phrase = fortune.fortune()
 var statusId = 200
-var allStatus = HTTPStatusCode.getProtocolDefinitions(statusId)
+var allStatus = HTTPStatusCode.getProtocolDefinitions()
 
 // Favicon - because I don't like unnecessary errors on log
 app.use('/favicon.ico', express.static('favicon.ico'));
 
 // Points to API URL, based on platform (local or Heroku)
 app.get('/', (req, res) => {
-  res.json({'newUrl': req.get('host') + '/api'})
+  res.json({'newUrl': req.get('host') + '/api', allStatus})
 })
 
 app.post('/', (req, res) => {
@@ -30,9 +30,17 @@ app.post('/', (req, res) => {
  *    else, returns random status code
  * 2. when returns some status code, include some text message and an image uri
  */
+
+// Get random HTTP code from allStatus object
+ var randomProperty = function (obj) {
+  var keys = Object.keys(obj);
+  var newKey = keys[ keys.length * Math.random() << 0]
+  return parseInt(newKey);
+};
+
 app.get('/api', (req, res) => {
-  statusId = 200
   phrase = fortune.fortune()
+  statusId = randomProperty(allStatus)
 
   res.status(statusId).json(
       {
@@ -63,5 +71,5 @@ app.get('/api/:id', function (req, res) {
 
 // Indicate running app
 app.listen(port, () => {
-  console.log(`Our app is running on port ${ port }`);
+  console.log(`Our app is running on port ${ port }`)
 });
