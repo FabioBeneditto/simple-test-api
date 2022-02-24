@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000
 const HTTPStatusCode = require('http-status-code')
+const fortune = require('random-fortune')
+var phrase = fortune.fortune()
 var statusId = 200
 var allStatus = HTTPStatusCode.getProtocolDefinitions(statusId)
 
@@ -11,7 +13,7 @@ app.use('/favicon.ico', express.static('favicon.ico'));
 // Points to API URL, based on platform (local or Heroku)
 app.get('/', (req, res) => {
   var hostName = req.hostname
-  
+
   if(!process.env.PORT) {
     hostName += ':' + port 
   }
@@ -30,11 +32,14 @@ app.post('/', (req, res) => {
  * 2. when returns some status code, include some text message and an image uri
  */
 app.get('/api', (req, res) => {
-  statusId = 200;
+  statusId = 200
+  phrase = fortune.fortune()
+
   res.json(
       {
         'code': statusId, 
-
+        'message': HTTPStatusCode.getMessage(statusId), 
+        'detail': phrase
       }
     )
 })
@@ -45,10 +50,13 @@ app.param('id', function (req, res, next, id) {
 })
 
 app.get('/api/:id', function (req, res) {
+  phrase = fortune.fortune()
+  
   res.json(
       {
         'code': statusId,
-        'message': HTTPStatusCode.getMessage(statusId)
+        'message': HTTPStatusCode.getMessage(statusId), 
+        'detail': phrase
       }
     )
   res.end()
