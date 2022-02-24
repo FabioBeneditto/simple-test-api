@@ -34,7 +34,7 @@ app.get('/api', (req, res) => {
   statusId = 200
   phrase = fortune.fortune()
 
-  res.json(
+  res.status(statusId).json(
       {
         'code': statusId, 
         'message': HTTPStatusCode.getMessage(statusId), 
@@ -51,7 +51,7 @@ app.param('id', function (req, res, next, id) {
 app.get('/api/:id', function (req, res) {
   phrase = fortune.fortune()
 
-  res.json(
+  res.status(statusId).json(
       {
         'code': statusId,
         'message': HTTPStatusCode.getMessage(statusId), 
