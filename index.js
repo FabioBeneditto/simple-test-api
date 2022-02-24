@@ -1,11 +1,11 @@
 // Locally reguired 
-// const dotenv = require('dotenv').config({ path: './.env' })
+const dotenv = require('dotenv').config({ path: './.env' })
 // end of Locally required
 const express = require('express')
 const app = express()
 const pexels = require('pexels')
-const photoCli = pexels.createClient(process.env.API_KEY);
-const port = process.env.PORT
+const photoCli = pexels.createClient(process.env.API_KEY || dotenv.API_KEY);
+const port = process.env.PORT || dotenv.PORT
 const HTTPStatusCode = require('http-status-code')
 const fortune = require('random-fortune')
 var phrase = fortune.fortune()
