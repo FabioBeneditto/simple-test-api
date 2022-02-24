@@ -29,7 +29,10 @@ app.post('/', (req, res) => {
 app.get('/api', (req, res) => {
   statusId = 200;
   res.json(
-      {'message': 'Return to API request: ' + statusId, allStatus}
+      {
+        'code': statusId, 
+        
+      }
     )
 })
 
@@ -41,8 +44,8 @@ app.param('id', function (req, res, next, id) {
 app.get('/api/:id', function (req, res) {
   res.json(
       {
-        'message': 'Return to API request: ' + statusId,
-        'status': HTTPStatusCode.getMessage(statusId)
+        'code': statusId,
+        'message': HTTPStatusCode.getMessage(statusId)
       }
     )
   res.end()
