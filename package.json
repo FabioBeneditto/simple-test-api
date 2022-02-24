@@ -9,6 +9,7 @@
   "author": "Fabio Beneditto",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "http-status-code": "^2.1.0"
   }
 }
