@@ -3,7 +3,12 @@ const app = express()
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  // res.send('Hello World!')
+  res.json(req)
+})
+
+app.post('/', (req, res) => {
+  res.send(`Redirect to ${req}`)
 })
 
 app.get('/api', (req, res) => {
@@ -12,10 +17,6 @@ app.get('/api', (req, res) => {
       {'message': 'Return to API request'}
     ]
   )
-})
-
-app.post('/', (req, res) => {
-  res.send('Receive a POST request!')
 })
 
 app.listen(port, () => {
