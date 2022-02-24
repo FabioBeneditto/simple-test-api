@@ -5,6 +5,9 @@ const HTTPStatusCode = require('http-status-code')
 var statusId = 200
 var allStatus = HTTPStatusCode.getProtocolDefinitions(statusId)
 
+// Favicon - because I don't like unnecessary errors on log
+app.use('/favicon.ico', express.static('favicon.ico'));
+
 // Points to API URL, based on platform (local or Heroku)
 app.get('/', (req, res) => {
   var hostName = req.hostname
