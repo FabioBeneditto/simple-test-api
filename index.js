@@ -20,60 +20,74 @@ app.get('/', (req, res) => {
   res.json({'newUrl': req.get('host') + '/api'})
 })
 
-app.post('/', (req, res) => {
-  res.send(`Redirect to ${req}`)
-})
-
 // Get random HTTP code from allStatus object
- var randomProperty = function (obj) {
+var randomProperty = function (obj) {
   var keys = Object.keys(obj);
   var newKey = keys[ keys.length * Math.random() << 0]
   return parseInt(newKey);
 };
 
+/**
+ * Default API request.
+ * Returns random HTTP Status code from HTTPStatusCode list
+ */
 app.get('/api', (req, res, next) => {
   phrase = fortune.fortune()
   statusId = randomProperty(allStatus)
   var jsonReturn = {          
     'code': statusId, 
-    'message': HTTPStatusCode.getMessage(statusId), 
-    'detail': phrase
+    'status': HTTPStatusCode.getMessage(statusId), 
+    'message': phrase
   }
-  photoCli.photos.random()
 
-  .then (photo => {
-      if(statusId >= 100 && statusId < 400) {
-        jsonReturn.image = photo.src.medium
-      }
-      res.status(statusId).json(jsonReturn)
-   } )
-  .catch(next); // error passed on to the error handling route
+  if(statusId >= 100 && statusId < 400) {
+    // Async to obtain image uri
+    photoCli.photos.random()
+      .then (photo => {
+          jsonReturn.image = photo.src.medium
+          res.status(statusId).json(jsonReturn)
+      } )
+      .catch(next);
+  } else {
+    res.status(statusId).json(jsonReturn)
+  }
 })
 
+/**
+ * Request with parameters, ex.:
+ * /api/418
+ * Returns this HTTP status code 
+ */
+
+// Read parameter and set to statusId
 app.param('id', function (req, res, next, id) {
   statusId = parseInt(id)
   next()
 })
 
+// Run Request
 app.get('/api/:id', function (req, res, next) {
   phrase = fortune.fortune()
   var jsonReturn = {          
     'code': statusId, 
-    'message': HTTPStatusCode.getMessage(statusId), 
-    'detail': phrase
+    'status': HTTPStatusCode.getMessage(statusId), 
+    'message': phrase
   }
-  photoCli.photos.random()
 
-  .then (photo => {
-      if(statusId >= 100 && statusId < 400) {
-        jsonReturn.image = photo.src.medium
-      }
-      res.status(statusId).json(jsonReturn)
-   } )
-  .catch(next); // error passed on to the error handling route
+  if(statusId >= 100 && statusId < 400) {
+    // Async to obtain image uri
+    photoCli.photos.random()
+      .then (photo => {
+          jsonReturn.image = photo.src.medium
+          res.status(statusId).json(jsonReturn)
+      } )
+      .catch(next);
+  } else {
+    res.status(statusId).json(jsonReturn)
+  }
 })
 
 // Indicate running app
 app.listen(port, () => {
-  console.log(`Our app is running on port ${ port }`)
+  console.log('Our app is running on port ' + port + ', with current status: \n\n' + phrase)
 });
