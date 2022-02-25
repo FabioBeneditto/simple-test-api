@@ -4,7 +4,7 @@ const dotenv = require('dotenv').config({ path: './.env' })
 const express = require('express')
 const app = express()
 const pexels = require('pexels')
-const photoCli = pexels.createClient(process.env.API_KEY || dotenv.API_KEY);
+const photoCli = pexels.createClient(process.env.API_KEY || dotenv.API_KEY)
 const port = process.env.PORT || dotenv.PORT
 const HTTPStatusCode = require('http-status-code')
 const fortune = require('random-fortune')
@@ -17,19 +17,12 @@ app.use('/favicon.ico', express.static('favicon.ico'));
 
 // Points to API URL, based on platform (local or Heroku)
 app.get('/', (req, res) => {
-  res.json({'newUrl': req.get('host') + '/api', allStatus})
+  res.json({'newUrl': req.get('host') + '/api'})
 })
 
 app.post('/', (req, res) => {
   res.send(`Redirect to ${req}`)
 })
-
-/**
- * TODO: 
- * 1. if receive Status Code as /api/400 returns this status code
- *    else, returns random status code
- * 2. when returns some status code, include some text message and an image uri
- */
 
 // Get random HTTP code from allStatus object
  var randomProperty = function (obj) {
@@ -38,17 +31,23 @@ app.post('/', (req, res) => {
   return parseInt(newKey);
 };
 
-app.get('/api', (req, res) => {
+app.get('/api', (req, res, next) => {
   phrase = fortune.fortune()
   statusId = randomProperty(allStatus)
+  var jsonReturn = {          
+    'code': statusId, 
+    'message': HTTPStatusCode.getMessage(statusId), 
+    'detail': phrase
+  }
+  photoCli.photos.random()
 
-  res.status(statusId).json(
-      {
-        'code': statusId, 
-        'message': HTTPStatusCode.getMessage(statusId), 
-        'detail': phrase
+  .then (photo => {
+      if(statusId >= 100 && statusId < 400) {
+        jsonReturn.image = photo.src.medium
       }
-    )
+      res.status(statusId).json(jsonReturn)
+   } )
+  .catch(next); // error passed on to the error handling route
 })
 
 app.param('id', function (req, res, next, id) {
@@ -56,17 +55,22 @@ app.param('id', function (req, res, next, id) {
   next()
 })
 
-app.get('/api/:id', function (req, res) {
+app.get('/api/:id', function (req, res, next) {
   phrase = fortune.fortune()
+  var jsonReturn = {          
+    'code': statusId, 
+    'message': HTTPStatusCode.getMessage(statusId), 
+    'detail': phrase
+  }
+  photoCli.photos.random()
 
-  res.status(statusId).json(
-      {
-        'code': statusId,
-        'message': HTTPStatusCode.getMessage(statusId), 
-        'detail': phrase
+  .then (photo => {
+      if(statusId >= 100 && statusId < 400) {
+        jsonReturn.image = photo.src.medium
       }
-    )
-  res.end()
+      res.status(statusId).json(jsonReturn)
+   } )
+  .catch(next); // error passed on to the error handling route
 })
 
 // Indicate running app
