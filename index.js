@@ -27,6 +27,20 @@ var randomProperty = function (obj) {
   return parseInt(newKey);
 };
 
+// Randomly drops 5xx connections 
+var dropConnection = function (statusId, res, jsonReturn) {
+  if(statusId > 499 && statusId < 600){
+    if((parseInt(Math.random() * 100) % 2) > 0){
+      res.status(statusId).end()
+    } else {
+      res.status(statusId).json(jsonReturn)  
+    }
+  } else {
+    // Bypass if statusId < 500
+    res.status(statusId).json(jsonReturn)
+  }
+}
+
 /**
  * Default API request.
  * Returns random HTTP Status code from HTTPStatusCode list
@@ -49,7 +63,7 @@ app.get('/api', (req, res, next) => {
       } )
       .catch(next);
   } else {
-    res.status(statusId).json(jsonReturn)
+    dropConnection(statusId, res, jsonReturn)
   }
 })
 
@@ -83,7 +97,7 @@ app.get('/api/:id', function (req, res, next) {
       } )
       .catch(next);
   } else {
-    res.status(statusId).json(jsonReturn)
+    dropConnection(statusId, res, jsonReturn)
   }
 })
 
