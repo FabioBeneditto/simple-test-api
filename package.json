@@ -1,7 +1,7 @@
 {
   "name": "labs-test-api",
   "version": "0.0.1",
-  "description": "API for Code Tests - Solutions Lab at Azion Tech",
+  "description": "API for Code Tests - Solutions Lab",
   "main": "index.js",
   "scripts": {
     "start": "SET NODE_ENV=dev && node index.js",
