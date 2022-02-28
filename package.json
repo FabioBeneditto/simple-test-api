@@ -4,7 +4,8 @@
   "description": "API for Code Tests - Solutions Lab at Azion Tech",
   "main": "index.js",
   "scripts": {
-    "test": "test.js"
+    "start": "SET NODE_ENV=dev && node index.js",
+    "test": "mocha --timeout 10000"
   },
   "author": "Fabio Beneditto",
   "license": "MIT",
@@ -14,5 +15,11 @@
     "http-status-code": "^2.1.0",
     "pexels": "^1.3.0",
     "random-fortune": "^0.2.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^9.2.1",
+    "nyc": "^15.1.0",
+    "supertest": "^6.2.2"
   }
 }
