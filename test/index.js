@@ -21,7 +21,7 @@ describe('main App', function(){
     })
 
     describe('get /api/418', function(){
-        it('Shound return 418 http code', function(done){
+        it('Should return 418 http code', function(done){
             request(app)
                 .get('/api/418')
                 .set('Accept','application/json')
