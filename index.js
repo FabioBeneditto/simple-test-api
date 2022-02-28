@@ -105,3 +105,6 @@ app.get('/api/:id', function (req, res, next) {
 app.listen(port, () => {
   console.log('Our app is running on port ' + port + ', with current status: \n\n' + phrase)
 });
+
+// Export modules for Tests
+module.exports = app
