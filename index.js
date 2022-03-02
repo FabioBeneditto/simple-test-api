@@ -18,9 +18,14 @@ app.use('/favicon.ico', express.static('favicon.ico'));
 
 // Points to API URL, based on platform (local or Heroku)
 app.get('/', (req, res) => {
+  // Trick: if newHost header was present, use it
+  let newUrl = req.get('newHost')
+  if(typeof req.get('newHost') === 'undefined') {
+    newUrl = req.get('host')
+  }
+
   res.json({
-    'newUrl': req.get('newHost') + '/api', 
-    'defaultUrl': req.headers.host + '/api'
+    'newUrl': newUrl + '/api'
   })
 })
 
