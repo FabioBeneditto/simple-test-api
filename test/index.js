@@ -49,7 +49,7 @@ describe('main App', function(){
         })
     })
 
-        describe('get /api/400', function(){
+    describe('get /api/400', function(){
         it('Should NOT return image uri', function(done){
             request(app)
                 .get('/api/400')
@@ -58,6 +58,21 @@ describe('main App', function(){
                 .expect(400)
                 .then(res => {
                     expect(res.body, 'It seems to be NOT Ok').to.not.match(/image/)
+                    done()
+                })
+                .catch(err => done(err))
+        })
+    })
+
+    describe('get /api/Invalid', function(){
+        it('Should Return 500', function(done){
+            request(app)
+                .get('/api/Invalid')
+                .set('Accept','application/json')
+                .expect('Content-Type', /json/)
+                .expect(500)
+                .then(res => {
+                    expect(res.body.code, 500)
                     done()
                 })
                 .catch(err => done(err))
