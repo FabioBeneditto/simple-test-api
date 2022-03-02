@@ -64,10 +64,10 @@ describe('main App', function(){
         })
     })
 
-    describe('get /api/Invalid', function(){
-        it('Should Return 500', function(done){
+    describe('get /api/Invalid/1', function(){
+        it('Should Return 500 error', function(done){
             request(app)
-                .get('/api/Invalid')
+                .get('/api/Invalid/1')
                 .set('Accept','application/json')
                 .expect('Content-Type', /json/)
                 .expect(500)
