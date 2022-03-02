@@ -10,6 +10,7 @@ const HTTPStatusCode = require('http-status-code')
 const fortune = require('random-fortune')
 var phrase = fortune.fortune()
 var statusId = 200
+var ignoreDrop = false
 var allStatus = HTTPStatusCode.getProtocolDefinitions()
 
 // Favicon - because I don't like unnecessary errors on log
@@ -33,7 +34,7 @@ var dropConnection = function (statusId, res, jsonReturn) {
     if((parseInt(Math.random() * 100) % 2) > 0){
       res.status(statusId).end()
     } else {
-      res.status(statusId).json(jsonReturn)  
+        res.status(statusId).json(jsonReturn)
     }
   } else {
     // Bypass if statusId < 500
@@ -68,8 +69,7 @@ app.get('/api', (req, res, next) => {
 })
 
 /**
- * Request with parameters, ex.:
- * /api/418
+ * Request with parameters, ex.: /api/418
  * Returns this HTTP status code 
  */
 
@@ -80,6 +80,14 @@ app.param('id', function (req, res, next, id) {
      statusId = 500
   } else {
     statusId = parseInt(id)
+  }
+  next()
+})
+
+// Read OPTIONAL parameter to drop 500 connection
+app.param('drop', function (req, res, next, drop) {
+  if(drop) {
+    ignoreDrop = true
   }
   next()
 })
@@ -103,6 +111,27 @@ app.get('/api/:id', function (req, res, next) {
       .catch(next);
   } else {
     dropConnection(statusId, res, jsonReturn)
+  }
+})
+
+app.get('/api/:id/:drop', function (req, res, next) {
+  phrase = fortune.fortune()
+  var jsonReturn = {          
+    'code': statusId, 
+    'status': HTTPStatusCode.getMessage(statusId), 
+    'message': phrase
+  }
+
+  if(statusId >= 100 && statusId < 400) {
+    // Async to obtain image uri
+    photoCli.photos.random()
+      .then (photo => {
+          jsonReturn.image = photo.src.medium
+          res.status(statusId).json(jsonReturn)
+      } )
+      .catch(next);
+  } else {
+    res.status(statusId).json(jsonReturn)
   }
 })
 

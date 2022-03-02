@@ -7,6 +7,7 @@ Useful in code tests:
 - for tests, `/api/418` returns 418 http status code
 - if http status code is between `100` and `399` returns image uri
 - if http status code is `5xx` randomly drops connection
+  - with additional parameter `/api/5xx/1` connection was not dropped (useful for tests)
 
 ## Requirements
 - `node` and `npm` 
