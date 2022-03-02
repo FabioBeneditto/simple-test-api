@@ -75,7 +75,12 @@ app.get('/api', (req, res, next) => {
 
 // Read parameter and set to statusId
 app.param('id', function (req, res, next, id) {
-  statusId = parseInt(id)
+  // Prevent invalid codes
+  if(typeof allStatus[id] === 'undefined') {
+     statusId = 500
+  } else {
+    statusId = parseInt(id)
+  }
   next()
 })
 
